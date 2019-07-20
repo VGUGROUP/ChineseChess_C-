@@ -8,6 +8,7 @@ SOURCES += \
         evaluation.cpp \
         main.cpp \
         piece.cpp \
+        player.cpp \
         rule.cpp \
         state.cpp
 
@@ -15,5 +16,6 @@ HEADERS += \
     alpha_beta.h \
     evaluation.h \
     piece.h \
+    player.h \
     rule.h \
     state.h
