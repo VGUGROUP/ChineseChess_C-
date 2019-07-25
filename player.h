@@ -10,19 +10,24 @@
 #include <map>
 #include <memory>
 #include <iostream>
-class player
+#include <algorithm>
+#include <state.h>
+#include <rule.h>
+class player : public rule
 {
 public:
     player();
     void createRedPiece();
     void createBlackPiece();
-
+    void update_boardState();
+    void movePiece(std::shared_ptr<piece> &_piece,std::pair<int,int> position);
+    void capture(std::pair<int,int> position);
 
 private:
-    int team = 0;
-    std::vector< std::unique_ptr<piece> > RedPiece,BlackPiece;
+    int currentPlayer = 0; //RED: user , BLACK: minimax , 0: undefined
+    std::vector< std::shared_ptr<piece> > RedPiece,BlackPiece;
     // "boardState" list map position of each piece and piece object for ease to use in rule class
-    std::map<std::pair<int,int>,piece> boardState;
+    std::map<std::pair<int,int>, std::shared_ptr<piece>> boardState;
 
 };
 
