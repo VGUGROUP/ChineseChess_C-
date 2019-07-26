@@ -5,6 +5,7 @@ CONFIG -= qt
 
 SOURCES += \
         alpha_beta.cpp \
+        board_view.cpp \
         evaluation.cpp \
         main.cpp \
         piece.cpp \
@@ -14,6 +15,7 @@ SOURCES += \
 
 HEADERS += \
     alpha_beta.h \
+    board_view.h \
     evaluation.h \
     piece.h \
     player.h \

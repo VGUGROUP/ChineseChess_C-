@@ -28,6 +28,10 @@ public:
                                   std::map<std::pair<int,int>, std::shared_ptr<piece>> boardState);
     std::vector<std::pair<int,int>> possibleMoveForAdvisor(std::shared_ptr<piece>& _piece,
                                   std::map<std::pair<int,int>, std::shared_ptr<piece>> boardState);
+    std::vector<std::pair<int,int>> possibleMoveForGeneral(std::shared_ptr<piece>& _piece,
+                                  std::map<std::pair<int,int>, std::shared_ptr<piece>> boardState);
+    std::vector<std::pair<int,int>> possibleMoveForSoldier(std::shared_ptr<piece>& _piece,
+                                  std::map<std::pair<int,int>, std::shared_ptr<piece>> boardState);
 
 
 private:

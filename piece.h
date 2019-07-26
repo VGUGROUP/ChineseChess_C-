@@ -14,17 +14,19 @@ class piece
 public:
    piece();
    ~piece();
-   piece(std::string name,std::pair<int,int> position,int team);
+   piece(std::string name, std::pair<int,int> position, int team, std::string symbol);
 
    std::pair<int, int> getPosition() ;
    std::string getName() ;
    void movePiece(std::pair<int,int> position);
    int getTeam() const;
+   std::string getSymbol() const;
 
 private:
-   std::string name;
+   std::string name,symbol;
    std::pair<int,int> position;  // pair (Y,X) --Row,Column
    int team;
+
 
 };
 

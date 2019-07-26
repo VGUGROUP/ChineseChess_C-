@@ -11,9 +11,10 @@
 #include <memory>
 #include <iostream>
 #include <algorithm>
-#include <state.h>
 #include <rule.h>
-class player : public rule
+#include <evaluation.h>
+
+class player : public rule, public evaluation
 {
 public:
     player();
@@ -22,12 +23,19 @@ public:
     void update_boardState();
     void movePiece(std::shared_ptr<piece> &_piece,std::pair<int,int> position);
     void capture(std::pair<int,int> position);
+    void computelegalMoves();
+    std::map<std::pair<int, int>, std::shared_ptr<piece> >& getBoardState();
+    int getCurrentPlayer() const;
+    int getValueOfState();
+    bool isKingExist(int currentPlayer);
+    void setCurrentPlayer(int value);
 
 private:
-    int currentPlayer = 0; //RED: user , BLACK: minimax , 0: undefined
+    int currentPlayer = RED; //RED: user , BLACK: minimax , 0: undefined
     std::vector< std::shared_ptr<piece> > RedPiece,BlackPiece;
     // "boardState" list map position of each piece and piece object for ease to use in rule class
     std::map<std::pair<int,int>, std::shared_ptr<piece>> boardState;
+    std::vector<std::pair<std::shared_ptr<piece>,std::pair<int,int>>> possibleMoves;
 
 };
 

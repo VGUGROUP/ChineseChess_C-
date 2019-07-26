@@ -33,30 +33,28 @@ int evaluation::pieceValue(std::string name)
 int evaluation::positionValue(std::string name, std::pair<int, int> position)
 {
     if(name == "BlackHorse"){
-    //    qDebug()<<"BlackHorse"<<BlackHorse[position.second/60-1][m_point.x()/60];
-        return BlackHorse[position.second/60-1][position.first/60];
+        return BlackHorse[position.first-1][position.second-1];
     }
     if(name =="RedHorse"){
-     //    qDebug()<<"RedHorse"<<RedHorse[m_point.y()/60-1][m_point.x()/60];
-        return RedHorse[position.second/60-1][position.first/60];
+        return RedHorse[position.first-1][position.second-1];
     }
     if(name =="BlackCannon"){
-        return BlackCannon[position.second/60-1][position.first/60];
+        return BlackCannon[position.first-1][position.second-1];
     }
     if(name =="RedCannon"){
-        return RedCannon[position.second/60-1][position.first/60];
+        return RedCannon[position.first-1][position.second-1];
     }
     if(name =="RedCar"){
-        return RedCar[position.second/60-1][position.first/60];
+        return RedCar[position.first-1][position.second-1];
     }
     if(name =="BlackCar"){
-        return BlackCar[position.second/60-1][position.first/60];
+        return BlackCar[position.first-1][position.second-1];
     }
     if(name =="RedSoldier"){
-        return RedSoldier[position.second/60-1][position.first/60];
+        return RedSoldier[position.first-1][position.second-1];
     }
     if(name =="BlackSoldier"){
-        return BlackSoldier[position.second/60-1][position.first/60];
+        return BlackSoldier[position.first-1][position.second-1];
     }
     return 0;
 

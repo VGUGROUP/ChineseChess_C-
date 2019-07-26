@@ -11,11 +11,12 @@ piece::~piece()
 
 }
 
-piece::piece(std::string name, std::pair<int, int> position, int team)
+piece::piece(std::string name, std::pair<int, int> position, int team, std::string symbol)
 {
    this->name = name;
    this->position = position;
    this->team = team;
+   this->symbol = symbol;
 }
 
 std::pair<int, int> piece::getPosition()
@@ -36,5 +37,10 @@ void piece::movePiece(std::pair<int, int> position)
 int piece::getTeam() const
 {
     return team;
+}
+
+std::string piece::getSymbol() const
+{
+    return symbol;
 }
 
