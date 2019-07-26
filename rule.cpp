@@ -547,8 +547,91 @@ std::vector<std::pair<int, int> > rule::possibleMoveForSoldier(std::shared_ptr<p
 {
     std::vector<std::pair<int, int>> legalMoves;
     std::pair<int, int> inputPiecePosition(_piece->getPosition());
-    //down
-    // if( no la quan do, ...) need help
+    //down black
+    if(_piece->getTeam()== -1 && inputPiecePosition.first + 1 <= maxRow )
+    {
+        auto result = boardState.find(std::make_pair(inputPiecePosition.first + 1, inputPiecePosition.second ));
+        if ( result != boardState.end() && result->second->getTeam() != _piece->getTeam())
+        {
+           legalMoves.push_back(result->first);
+        }
+        // Blank pos condition:
+        else if (result == boardState.end())
+        {
+            legalMoves.push_back(std::make_pair(inputPiecePosition.first + 1, inputPiecePosition.second ));
+        }
+    }
+    //left black after river
+    if(_piece->getTeam()== -1 && inputPiecePosition.first >= maxRow - 4 && inputPiecePosition.second - 1 >= minCol)
+    {
+        auto result = boardState.find(std::make_pair(inputPiecePosition.first, inputPiecePosition.second - 1 ));
+        if ( result != boardState.end() && result->second->getTeam() != _piece->getTeam())
+        {
+           legalMoves.push_back(result->first);
+        }
+        // Blank pos condition:
+        else if (result == boardState.end())
+        {
+            legalMoves.push_back(std::make_pair(inputPiecePosition.first , inputPiecePosition.second - 1 ));
+        }
+    }
+    //right black after river
+    if(_piece->getTeam()== -1 && inputPiecePosition.first >= maxRow - 4 && inputPiecePosition.second + 1 <= maxCol)
+    {
+        auto result = boardState.find(std::make_pair(inputPiecePosition.first, inputPiecePosition.second + 1 ));
+        if ( result != boardState.end() && result->second->getTeam() != _piece->getTeam())
+        {
+           legalMoves.push_back(result->first);
+        }
+        // Blank pos condition:
+        else if (result == boardState.end())
+        {
+            legalMoves.push_back(std::make_pair(inputPiecePosition.first, inputPiecePosition.second +1 ));
+        }
+    }
+    //up red
+    if(_piece->getTeam()== 1 && inputPiecePosition.first - 1 >= minRow )
+    {
+        auto result = boardState.find(std::make_pair(inputPiecePosition.first - 1, inputPiecePosition.second ));
+        if ( result != boardState.end() && result->second->getTeam() != _piece->getTeam())
+        {
+           legalMoves.push_back(result->first);
+        }
+        // Blank pos condition:
+        else if (result == boardState.end())
+        {
+            legalMoves.push_back(std::make_pair(inputPiecePosition.first - 1, inputPiecePosition.second ));
+        }
+    }
+    //left red after river
+    if(_piece->getTeam()== 1 && inputPiecePosition.first <= minRow + 4 && inputPiecePosition.second - 1 >= minCol)
+    {
+        auto result = boardState.find(std::make_pair(inputPiecePosition.first, inputPiecePosition.second - 1 ));
+        if ( result != boardState.end() && result->second->getTeam() != _piece->getTeam())
+        {
+           legalMoves.push_back(result->first);
+        }
+        // Blank pos condition:
+        else if (result == boardState.end())
+        {
+            legalMoves.push_back(std::make_pair(inputPiecePosition.first , inputPiecePosition.second - 1 ));
+        }
+    }
+    //right red after river
+    if(_piece->getTeam()== 1 && inputPiecePosition.first <= minRow + 4 && inputPiecePosition.second + 1 >= maxCol)
+    {
+        auto result = boardState.find(std::make_pair(inputPiecePosition.first, inputPiecePosition.second + 1 ));
+        if ( result != boardState.end() && result->second->getTeam() != _piece->getTeam())
+        {
+           legalMoves.push_back(result->first);
+        }
+        // Blank pos condition:
+        else if (result == boardState.end())
+        {
+            legalMoves.push_back(std::make_pair(inputPiecePosition.first , inputPiecePosition.second + 1 ));
+        }
+    }
+    return legalMoves;
 }
 
 
