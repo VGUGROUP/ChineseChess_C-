@@ -18,17 +18,26 @@ class player : public rule, public evaluation
 {
 public:
     player();
+    player(player &_player);
     void createRedPiece();
     void createBlackPiece();
     void update_boardState();
     void movePiece(std::shared_ptr<piece> &_piece,std::pair<int,int> position);
     void capture(std::pair<int,int> position);
-    void computelegalMoves();
-    std::map<std::pair<int, int>, std::shared_ptr<piece> >& getBoardState();
+    std::vector<std::pair<std::shared_ptr<piece>, std::pair<int, int> > > computelegalMoves();
+    std::map<std::pair<int, int>, std::shared_ptr<piece> > getBoardState();
     int getCurrentPlayer() const;
     int getValueOfState();
     bool isKingExist(int currentPlayer);
+
+    std::shared_ptr<piece> getSimilarPiece(std::shared_ptr<piece>& _piece);
     void setCurrentPlayer(int value);
+    void setBlackPiece(const std::vector<std::shared_ptr<piece> > &value);
+    void setRedPiece(const std::vector<std::shared_ptr<piece> > &value);
+    std::vector<std::shared_ptr<piece> > getRedPiece() const;
+    std::vector<std::shared_ptr<piece> > getBlackPiece() const;
+
+    std::vector<std::pair<std::shared_ptr<piece>, std::pair<int, int> > > getPossibleMoves() const;
 
 private:
     int currentPlayer = RED; //RED: user , BLACK: minimax , 0: undefined

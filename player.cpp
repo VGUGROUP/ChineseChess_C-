@@ -7,6 +7,18 @@ player::player()
     update_boardState();
 }
 
+player::player(player &_player)
+{
+    this->currentPlayer = _player.getCurrentPlayer();
+    for (auto _piece : _player.getRedPiece()) {
+        RedPiece.push_back(std::shared_ptr<piece>(new piece(*_piece.get())));
+    }
+    for (auto _piece : _player.getBlackPiece()) {
+        BlackPiece.push_back(std::shared_ptr<piece>(new piece(*_piece.get())));
+    }
+    update_boardState();
+}
+
 void player::createBlackPiece()
 {
     BlackPiece.push_back(std::shared_ptr<piece>(new piece("BlackCar",std::pair<int,int>(1,1),BLACK,"BC1")));
@@ -104,7 +116,7 @@ void player::capture(std::pair<int, int> position)
 
 }
 
-void player::computelegalMoves()
+std::vector<std::pair<std::shared_ptr<piece>, std::pair<int, int> > >player::computelegalMoves()
 {
         std::vector<std::reference_wrapper< std::shared_ptr<piece>>> pieceList;
         if(currentPlayer == BLACK){
@@ -136,9 +148,10 @@ void player::computelegalMoves()
                 }
             }
         }
+        return  possibleMoves;
 }
 
-std::map<std::pair<int, int>, std::shared_ptr<piece> > &player::getBoardState()
+std::map<std::pair<int, int>, std::shared_ptr<piece> > player::getBoardState()
 {
     return boardState;
 }
@@ -189,10 +202,62 @@ bool player::isKingExist(int currentPlayer)
    return  true;
 }
 
+std::shared_ptr<piece> player::getSimilarPiece(std::shared_ptr<piece> &_piece)
+{
+    int player = _piece->getTeam();
+    std::string symbol = _piece->getSymbol();
+
+    std::vector<std::reference_wrapper< std::shared_ptr<piece>>> pieceList;
+    if(player == RED){
+       pieceList.assign(RedPiece.begin(),RedPiece.end());
+    }
+    else if (player == BLACK) {
+        pieceList.assign(BlackPiece.begin(),BlackPiece.end());
+    }
+
+    auto result = std::find_if(pieceList.begin(),pieceList.end(),[symbol](std::shared_ptr<piece> &_piece){
+         if(_piece->getSymbol() == symbol){
+            return true;
+         }
+
+         else {
+             return false;
+         }
+
+     });
+
+
+    if(result != pieceList.end()) return result->get();
+
+}
+
 void player::setCurrentPlayer(int value)
 {
     currentPlayer = value;
 }
 
+void player::setBlackPiece(const std::vector<std::shared_ptr<piece> > &value)
+{
+    BlackPiece = value;
+}
 
+void player::setRedPiece(const std::vector<std::shared_ptr<piece> > &value)
+{
+    RedPiece = value;
+}
+
+std::vector<std::shared_ptr<piece> > player::getRedPiece() const
+{
+    return RedPiece;
+}
+
+std::vector<std::shared_ptr<piece> > player::getBlackPiece() const
+{
+    return BlackPiece;
+}
+
+std::vector<std::pair<std::shared_ptr<piece>, std::pair<int, int> > > player::getPossibleMoves() const
+{
+    return possibleMoves;
+}
 
