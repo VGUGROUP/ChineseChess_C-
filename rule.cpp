@@ -551,4 +551,23 @@ std::vector<std::pair<int, int> > rule::possibleMoveForSoldier(std::shared_ptr<p
     // if( no la quan do, ...) need help
 }
 
+bool rule::isOutofBound(std::pair<int, int> currentPosition)
+{
+    if(minRow <= currentPosition.first <= maxRow && minCol <= currentPosition.second <= maxCol) return  false;
+    return false;
+}
+
+bool rule::isValidMove(std::shared_ptr<piece> &_piece, std::pair<int, int> destinationPosition, std::map<std::pair<int, int>, std::shared_ptr<piece> > boardState)
+{
+    if(!isOutofBound(destinationPosition)){
+        auto result = boardState.find(destinationPosition);
+        if(result != boardState.end()){
+            return  result->second->getTeam() != _piece->getTeam();
+        }
+        return  true;
+    }
+    return  false;
+
+}
+
 

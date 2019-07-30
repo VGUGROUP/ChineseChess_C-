@@ -8,7 +8,6 @@ board_view::board_view()
 void board_view::draw_board(const std::shared_ptr<player> &_player)
 {
     std::map<std::pair<int,int>, std::shared_ptr<piece>> boardState = _player->getBoardState();
-
     for (int row = 1; row <= 10; ++row) {
         for (int col = 1; col < 10; ++col) {
             auto result = boardState.find({row,col});
@@ -23,4 +22,5 @@ void board_view::draw_board(const std::shared_ptr<player> &_player)
         }
         std::cout<<std::endl;
     }
+   std::cout<<"----------------------------------------------------------------------------"<<std::endl;
 }

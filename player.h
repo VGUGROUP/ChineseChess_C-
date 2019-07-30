@@ -22,7 +22,7 @@ public:
     void createRedPiece();
     void createBlackPiece();
     void update_boardState();
-    void movePiece(std::shared_ptr<piece> &_piece,std::pair<int,int> position);
+    bool movePiece(std::shared_ptr<piece> &_piece,std::pair<int,int> position);
     void capture(std::pair<int,int> position);
     std::vector<std::pair<std::shared_ptr<piece>, std::pair<int, int> > > computelegalMoves();
     std::map<std::pair<int, int>, std::shared_ptr<piece> > getBoardState();
@@ -31,6 +31,7 @@ public:
     bool isKingExist(int currentPlayer);
 
     std::shared_ptr<piece> getSimilarPiece(std::shared_ptr<piece>& _piece);
+    std::shared_ptr<piece> getPiecBySymbol(std::string symbol);
     void setCurrentPlayer(int value);
     void setBlackPiece(const std::vector<std::shared_ptr<piece> > &value);
     void setRedPiece(const std::vector<std::shared_ptr<piece> > &value);

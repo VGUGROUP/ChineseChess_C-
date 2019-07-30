@@ -75,12 +75,16 @@ void player::update_boardState()
     }
 }
 
-void player::movePiece(std::shared_ptr<piece> &_piece, std::pair<int, int> position)
+bool player::movePiece(std::shared_ptr<piece> &_piece, std::pair<int, int> position)
 {
+    if(isValidMove(_piece,position,boardState)){
+        _piece.get()->movePiece(position);
+        capture(position);
+        update_boardState();
+        return  true;
+    }
+    return false;
 
-    _piece.get()->movePiece(position);
-    capture(position);
-    update_boardState();
 }
 
 void player::capture(std::pair<int, int> position)
@@ -92,55 +96,61 @@ void player::capture(std::pair<int, int> position)
           std::cout<< var.first.get()->getSymbol()<<"   Row_"<<var.second.first<<"Col_"<<var.second.second<<std::endl;
       }
      //...*/
-    std::vector<std::reference_wrapper< std::shared_ptr<piece>>> pieceList;
     if(currentPlayer == BLACK){
-       pieceList.assign(RedPiece.begin(),RedPiece.end());
+        RedPiece.erase(std::remove_if(RedPiece.begin(),RedPiece.end(),
+           [position](std::shared_ptr<piece> &_piece)
+           {
+
+             if(_piece.get()->getPosition() == position)
+             {
+               return  true;
+             }
+             return false;
+           }
+           )
+        );
     }
     else if (currentPlayer == RED) {
-        pieceList.assign(BlackPiece.begin(),BlackPiece.end());
+       BlackPiece.erase(std::remove_if(BlackPiece.begin(),BlackPiece.end(),
+           [position](std::shared_ptr<piece> &_piece)
+           {
+
+             if(_piece.get()->getPosition() == position)
+             {
+               return  true;
+             }
+             return false;
+           }
+           )
+        );
     }
-
-    pieceList.erase(std::remove_if(pieceList.begin(),pieceList.end(),
-       [position](std::shared_ptr<piece> &_piece)
-       {
-
-         if(_piece.get()->getPosition() == position)
-         {
-           std::cout<<_piece->getName()<<"use_cout : "<<_piece.use_count()<<std::endl;
-           return  true;
-         }
-         return false;
-       }
-       )
-    );
-
 }
 
 std::vector<std::pair<std::shared_ptr<piece>, std::pair<int, int> > >player::computelegalMoves()
 {
         std::vector<std::reference_wrapper< std::shared_ptr<piece>>> pieceList;
-        if(currentPlayer == BLACK){
+        if(currentPlayer == RED){
            pieceList.assign(RedPiece.begin(),RedPiece.end());
         }
-        else if (currentPlayer == RED) {
+        else if (currentPlayer == BLACK) {
             pieceList.assign(BlackPiece.begin(),BlackPiece.end());
         }
 
         for (auto piece : pieceList) {
             std::string name = piece.get()->getName();
 
-            if(name == "BlackCar" || name == "RedCar"){
-                auto list = possibleMoveForCar(piece,boardState);
-                for (auto point : list) {
-                       possibleMoves.push_back({piece,point});
-                }
-            }
-            if(name == "BlackHorse" || name == "RedHorse"){
-                auto list = possibleMoveForHorse(piece,boardState);
-                for (auto point : list) {
-                       possibleMoves.push_back({piece,point});
-                }
-            }
+//            if(name == "BlackCar" || name == "RedCar"){
+//                auto list = possibleMoveForCar(piece,boardState);
+//                for (auto point : list) {
+//                       possibleMoves.push_back({piece,point});
+//                }
+//            }
+//            if(name == "BlackHorse" || name == "RedHorse"){
+//                auto list = possibleMoveForHorse(piece,boardState);
+//                for (auto point : list) {
+//                       possibleMoves.push_back({piece,point});
+//                }
+//            }
             if(name == "BlackCannon" || name == "RedCannon"){
                 auto list = possibleMoveForCannon(piece,boardState);
                 for (auto point : list) {
@@ -166,14 +176,14 @@ int player::getValueOfState()
     int RedScore = 0 ,BlackScore = 0;
     for (auto &piece : RedPiece) {
         std::string name = piece->getName();
-        std::cout<<name+ " _ " <<pieceValue(name)<<" _ "<<positionValue(name,piece->getPosition())<<std::endl;
-        RedScore = pieceValue(name) + positionValue(name,piece->getPosition());
+        RedScore += pieceValue(name) + positionValue(name,piece->getPosition());
 
     }
     for (auto &piece : BlackPiece) {
         std::string name = piece->getName();
-        BlackScore = pieceValue(name) + positionValue(name,piece->getPosition());
+        BlackScore += pieceValue(name) + positionValue(name,piece->getPosition());
     }
+
     return RedScore - BlackScore;
 }
 
@@ -229,6 +239,34 @@ std::shared_ptr<piece> player::getSimilarPiece(std::shared_ptr<piece> &_piece)
 
     if(result != pieceList.end()) return result->get();
 
+    return std::shared_ptr<piece>(nullptr);
+
+}
+
+std::shared_ptr<piece> player::getPiecBySymbol(std::string symbol)
+{
+    std::vector<std::reference_wrapper< std::shared_ptr<piece>>> pieceList;
+    if(currentPlayer == RED){
+       pieceList.assign(RedPiece.begin(),RedPiece.end());
+    }
+    else if (currentPlayer == BLACK) {
+        pieceList.assign(BlackPiece.begin(),BlackPiece.end());
+    }
+
+    auto result = std::find_if(pieceList.begin(),pieceList.end(),[symbol](std::shared_ptr<piece> &_piece){
+         if(_piece->getSymbol() == symbol){
+            return true;
+         }
+
+         else {
+             return false;
+         }
+
+     });
+
+
+    if(result != pieceList.end()) return result->get();
+    return std::shared_ptr<piece>(nullptr);
 }
 
 void player::setCurrentPlayer(int value)
