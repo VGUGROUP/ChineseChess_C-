@@ -33,6 +33,10 @@ public:
     std::vector<std::pair<int,int>> possibleMoveForSoldier(std::shared_ptr<piece>& _piece,
                                   std::map<std::pair<int,int>, std::shared_ptr<piece>> boardState);
 
+    bool isOutofBound(std::pair<int,int> currentPosition);
+    bool isValidMove(std::shared_ptr<piece>& _piece,std::pair<int,int> destinationPosition,std::map<std::pair<int,int>,
+                     std::shared_ptr<piece>> boardState);
+
 
 private:
     int maxRow = 10, minRow = 1, maxCol = 9 , minCol = 1;

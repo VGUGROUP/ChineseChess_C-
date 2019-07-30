@@ -3,17 +3,13 @@
 #include <string>
 #include <utility>
 
-typedef struct point{
-    point(int _row,int _col):row(_row),col(_col){}
-    int row;
-    int col;
-}point;
 
 class piece
 {
 public:
    piece();
    ~piece();
+   piece(piece &_piece);
    piece(std::string name, std::pair<int,int> position, int team, std::string symbol);
 
    std::pair<int, int> getPosition() ;

@@ -5,16 +5,17 @@
 #include <utility>
 #include <map>
 #include <iostream>
+#include <player.h>
 
 class board_view
 {
 public:
-    board_view( std::map<std::pair<int,int>, std::shared_ptr<piece>> &_boardState);
-    void draw_board();
+    board_view();
+    static void draw_board(const std::shared_ptr<player> &_player);
 
 
 private:
-     std::map<std::pair<int,int>, std::shared_ptr<piece>> boardState;
+
 };
 
 #endif // BOARD_VIEW_H

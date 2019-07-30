@@ -1,12 +1,13 @@
 #include "board_view.h"
 
-board_view::board_view(std::map<std::pair<int, int>, std::shared_ptr<piece> > &_boardState)
+board_view::board_view()
 {
-    boardState = _boardState;
+
 }
 
-void board_view::draw_board()
+void board_view::draw_board(const std::shared_ptr<player> &_player)
 {
+    std::map<std::pair<int,int>, std::shared_ptr<piece>> boardState = _player->getBoardState();
     for (int row = 1; row <= 10; ++row) {
         for (int col = 1; col < 10; ++col) {
             auto result = boardState.find({row,col});
@@ -21,4 +22,5 @@ void board_view::draw_board()
         }
         std::cout<<std::endl;
     }
+   std::cout<<"----------------------------------------------------------------------------"<<std::endl;
 }

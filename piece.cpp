@@ -11,6 +11,14 @@ piece::~piece()
 
 }
 
+piece::piece(piece &_piece)
+{
+    this->name = _piece.getName();
+    this->position = _piece.getPosition();
+    this->team =_piece.getTeam();
+    this->symbol = _piece.getSymbol();
+}
+
 piece::piece(std::string name, std::pair<int, int> position, int team, std::string symbol)
 {
    this->name = name;
