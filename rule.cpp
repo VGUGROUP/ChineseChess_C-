@@ -44,6 +44,7 @@ std::shared_ptr<piece> rule::findFirstPieceOnCol(std::pair<int, int> currentPosi
 
 std::vector<std::pair<int, int> > rule::possibleMoveForCannon(std::shared_ptr<piece> &_piece, std::map<std::pair<int, int>, std::shared_ptr<piece> > boardState)
 {
+
     std::vector<std::pair<int,int>> legalMoves;
     std::pair<int,int> inputPiecePosition(_piece->getPosition());
 
@@ -65,7 +66,7 @@ std::vector<std::pair<int, int> > rule::possibleMoveForCannon(std::shared_ptr<pi
     }
     else
     {
-        for (int i = inputPiecePosition.first +1 ;i >= minRow ; i++) {
+        for (int i = inputPiecePosition.first +1 ;i <= maxRow ; i++) {
             legalMoves.push_back(std::make_pair(i,inputPiecePosition.second));
         }
     }
@@ -87,7 +88,7 @@ std::vector<std::pair<int, int> > rule::possibleMoveForCannon(std::shared_ptr<pi
     }
     else
     {
-        for (int i = inputPiecePosition.first -1 ;i <= minRow ; i--) {
+        for (int i = inputPiecePosition.first -1 ;i >= minRow ; i--) {
             legalMoves.push_back(std::make_pair(i,inputPiecePosition.second));
         }
     }
@@ -319,7 +320,7 @@ std::vector<std::pair<int, int> > rule::possibleMoveForCar(std::shared_ptr<piece
     }
     else{
         for (int var = inputPiecePosition.second - 1; var >= minCol; --var) {
-            legalMoves.push_back((std::make_pair(inputPiecePosition.second,var)));
+            legalMoves.push_back((std::make_pair(inputPiecePosition.first,var)));
         }
     }
     return  legalMoves;

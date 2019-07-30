@@ -12,6 +12,7 @@ class board_view
 public:
     board_view();
     static void draw_board(const std::shared_ptr<player> &_player);
+    static void draw_river();
 
 
 private:

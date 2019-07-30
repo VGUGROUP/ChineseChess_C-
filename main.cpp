@@ -6,5 +6,6 @@ int main()
 {
     state game;
     game.initGameState();
+    game.playGame();
     return 0;
 }

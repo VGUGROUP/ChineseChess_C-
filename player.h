@@ -29,7 +29,7 @@ public:
     int getCurrentPlayer() const;
     int getValueOfState();
     bool isKingExist(int currentPlayer);
-
+    void restart();
     std::shared_ptr<piece> getSimilarPiece(std::shared_ptr<piece>& _piece);
     std::shared_ptr<piece> getPiecBySymbol(std::string symbol);
     void setCurrentPlayer(int value);
@@ -37,8 +37,8 @@ public:
     void setRedPiece(const std::vector<std::shared_ptr<piece> > &value);
     std::vector<std::shared_ptr<piece> > getRedPiece() const;
     std::vector<std::shared_ptr<piece> > getBlackPiece() const;
-
     std::vector<std::pair<std::shared_ptr<piece>, std::pair<int, int> > > getPossibleMoves() const;
+     std::vector<std::pair<int, int> > getMoveByPiece(std::shared_ptr<piece> &_piece);
 
 private:
     int currentPlayer = RED; //RED: user , BLACK: minimax , 0: undefined

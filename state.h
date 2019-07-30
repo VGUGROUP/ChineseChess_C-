@@ -25,7 +25,8 @@ public:
     };
     state();
     state(state &_state);
-    void setNextMove_AB();
+    void restart();
+    bool setNextMove_AB();
     int getStateScore();
     bool isEndGame();
     void initGameState();
@@ -38,8 +39,9 @@ public:
     std::vector<std::pair<std::shared_ptr<piece>, std::pair<int, int> > > getAllposibleMoves();
     void draw_state(state &_state);
     bool movePiece(std::shared_ptr<piece> &_piece,std::pair<int,int> position);
-
+//for testing only
     void inputMove();
+    void playGame();
 private:
     std::shared_ptr<player> _player;
 };

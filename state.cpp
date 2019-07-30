@@ -10,11 +10,23 @@ state::state(state &_state)
     this->_player = std::shared_ptr<player> (new player(*_state.getPlayer()));
 }
 
-void state::setNextMove_AB()
+void state::restart()
 {
-    auto result = alphabeta(*this,1,false,-9999,9999);
-    movePiece(result._piece,result._toPoint);
-    draw_state(*this);
+    _player->restart();
+}
+
+bool state::setNextMove_AB()
+{
+    if(!isEndGame()){
+        auto result = alphabeta(*this,3,false,-9999,9999);
+
+//        std::cout<<result._piece->getSymbol()<<"_row_"<<result._toPoint.first<<"_col_"<<result._toPoint.second<<std::endl;
+        movePiece(result._piece,result._toPoint);
+        draw_state(*this);
+        switchPlayer();
+        return  true;
+    }
+    return false;
 }
 
 int state::getStateScore()
@@ -34,8 +46,6 @@ void state::initGameState()
     _player = std::shared_ptr<player> (new player);
     _player->setCurrentPlayer(RED);
     draw_state(*this);
-    inputMove();
-
 }
 
 void state::switchPlayer()
@@ -85,25 +95,58 @@ bool state::movePiece(std::shared_ptr<piece> &_piece, std::pair<int, int> positi
 
 void state::inputMove()
 {
+    NAME:
     std::string symbol,row,col;
     std::pair<int,int> position;
     std::cout <<"input piece symbol:";
     std::getline(std::cin,symbol);
+    auto piece = _player->getPiecBySymbol(symbol);
+    if(piece == nullptr){
+        std::cout<<"invalid name"<<std::endl;
+        goto NAME;
+    }
+    auto list = _player->getMoveByPiece(piece);
+    for (auto var : list) {
+       std::cout<<"Row_"<<var.first<<"Col_"<<var.second<<std::endl;
+    }
+
+    POS:
     std::cout<<"input position: "<<std::endl;
     std::cout<<"Row: ";
     std::getline(std::cin,row);
     std::cout<<"Col: ";
     std::getline(std::cin,col);
 
+    if(row.empty() || col.empty()) goto POS;
     position = {std::stoi(row),std::stoi(col)};
-    auto piece = _player->getPiecBySymbol(symbol);
-    if(piece == nullptr){
-        std::cout<<"invalid name"<<std::endl;
-    }
-    if(!movePiece(piece,position)){
+    auto it = std::find(list.begin(),list.end(),position);
+    if(it == list.end()){
         std::cout<<"invalid position"<<std::endl;
+        goto POS;
     };
-    setNextMove_AB();
+    movePiece(piece,position);
+
+    draw_state(*this);
+   
+}
+
+void state::playGame()
+{
+    START:
+    do{
+     inputMove();
+    }while(setNextMove_AB());
+
+    std::cout<<"game is end"<<std::endl;
+    std::cout<<"press CTRL D to restart";
+    std::string _restart;
+    std::cin.clear();
+    std::getline(std::cin,_restart);
+    if(!std::cin.eof()) {
+        restart();
+        goto START;
+    }
+
 
 }
 
@@ -123,6 +166,12 @@ state::AB_result state::alphabeta(state &_state, int depth, bool isMax, int alph
 
     _state.switchPlayer();
     auto moves = _state.getAllposibleMoves();
+//    //------------------------------------------------
+//    for (auto var : moves) {
+//        std::cout<<var.first->getSymbol()<<"_Row_"<<var.second.first<<"_Col_"<<var.second.second<<std::endl;
+//    }
+//    //------------------------------------------------
+
     std::vector<AB_result> eval_result;
 
     for (unsigned int i =0 ;i <moves.size() ; i++) {
@@ -164,6 +213,8 @@ state::AB_result state::alphabeta(state &_state, int depth, bool isMax, int alph
             index = int (std::find(scores.begin(),scores.end(),minScore) - scores.begin() );
 
         }
+//    std::cout<<eval_result.at(index)._piece->getSymbol()<<"_row_"<<eval_result.at(index)._toPoint.first
+//            <<"_col_"<<eval_result.at(index)._toPoint.second<<std::endl;
     return eval_result.at (unsigned(index));
 }
 
