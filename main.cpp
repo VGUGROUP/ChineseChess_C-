@@ -1,9 +1,11 @@
 #include<iostream>
-
+#include <state.h>
 using namespace std;
 
 int main()
 {
-    cout << "Hello World!" << endl;
+    state game;
+    game.initGameState();
+    game.playGame();
     return 0;
 }
